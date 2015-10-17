@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+
+
+	
+{% block content %}
+
+  <div class="col-sm-6 col-sm-offset-3">
+    {% for cat in category %}
+	  <a href = "{{ cat.get_absolute_url }}"> {{ cat.title }} </a> </br>
+	  
+    {% endfor %}
+	
+	</br>
+  </div>
+
+{% endblock %}
+
+
+

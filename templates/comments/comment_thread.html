@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<table class = "table">
+<a href = '{{ comment.get_origin }}'> Go Back </a>
+ <tr><td>{{ comment.get_comment }} </br>
+	<small>{{ comment.user }} | {{ comment.timestamp| timesince}} ago </small>
+	{% if not comment.is_child %}
+	<ul>
+		{% for child in comment.get_children %}
+		<li> {{ child.get_comment }}
+		<small> {{ child.user }}</small></li>
+		{% endfor %}
+		</ul>
+		<div class='reply_comment'>
+		<form method= "POST" action='{% url "comment_create_view" %}'>{% csrf_token %}
+		<input type='hidden' name='parent_id' value='{{ comment.id }}' />
+			{% crispy form form.helper %}
+		</form>
+		</div>
+	{% endif %}
+</table>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="container">
+   <div class="row">
+       <div class="col-sm-3 col-sm-offset-3">
+			
+			<form method = "POST" action = '/'> {% csrf_token %}
+				{{ form | crispy }}
+				<input class='btn btn-default' type='submit' value='Register'/>
+			</form>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+
+
+
+	
+{% block content %}
+
+  <div class="col-sm-6 col-sm-offset-3">
+    {% for vid in videos %}
+	
+		</br>
+		<a href="{{ vid.get_absolute_url }}">{{ vid }} </a>
+		<!--{{ vid.embed_code| safe }}-->
+    {% endfor %}
+	
+	</br>
+  </div>
+
+{% endblock %}
+
+
+

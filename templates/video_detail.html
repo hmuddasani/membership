@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+<script>
+{% block jquery %} 
+  $('.reply_btn').click(function(e){
+    e.preventDefault();
+	$(this).next(".reply_comment").fadeToggle();	
+	})
+ {% endblock %}
+	</script>
+
+
+
+
+{% block style %}
+<style>
+.reply_comment {
+	display:none; 
+	}
+</style>
+{% endblock %}
+
+
+
+{% block content %}
+  <div class="col-sm-6 col-sm-offset-3">	     
+   {{ obj.embed_code | safe }}
+   </br>
+   </div>
+   <div class="col-sm-6 col-sm-offset-3">	     
+   {% if obj.tag.all %}
+   <ul>
+		{% for tags in obj.tag.all %}
+			<li>{{ tags }}</li>
+		{% endfor %}
+	{% endif %}
+	</ul>
+	</div>
+	<a href="https://twitter.com/home?status=">Share on Twitter</a>
+	</br>
+
+  <div class="row">
+  <div class="col-sm-6 col-sm-offset-3">
+  <h1> Comments/Questions </h1>
+  
+  <form method = "POST" action='{% url "comment_create_view" %}'>{% csrf_token %}
+  <input type = "hidden" name="video_id" Value='{{ obj.id }}'/>
+  <input type = "hidden" name="origin_path" Value='{{ request.get_full_path }}'/>
+	{% crispy comment_form comment_form.helper %}
+  </form>
+  <table class ='table' >
+  {% for comment in comments %}
+    <tr><td>{{ comment.get_comment }} </br>
+	<small>{{ comment.user }} | {{ comment.timestamp| timesince}} ago </small>
+	{% if not comment.is_child %}
+	<ul>
+		{% for child in comment.get_children %}
+		<li> {{ child.get_comment }}
+		<small> {{ child.user }}</small></li>
+		{% endfor %}
+		</ul>
+		<a href= '{{ comment.get_absolute_url }}' > View Thread </a> | <a href ='#' class='reply_btn'> Reply </a>  
+		<div class='reply_comment'>
+		<form method= "POST" action='{% url "comment_create_view" %}'>{% csrf_token %}
+		<input type = "hidden" name="parent_id" Value='{{ comment.id }}'/>
+		 <input type = "hidden" name="video_id" Value='{% url "comment_create_view" %}'/>
+		 <input type = "hidden" name="origin_path" Value='{{ comment.get_origin }}'/>
+		{% crispy comment_form comment_form.helper %}
+		</form>
+		</div>
+	{% endif %}
+
+	
+  </tr></td>
+  {% endfor %}
+ </table>
+</div></div>
+
+{% endblock %}
+	
+
+

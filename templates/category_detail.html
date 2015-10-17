@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+
+
+
+	
+{% block content %}
+
+  <div class="col-sm-6 col-sm-offset-3">
+
+   </br>
+	{{ obj }} </br>
+	
+	{% for vid in queryset %}
+	    {{ obj.get_absolute_url }}</br>
+		{{ vid }}
+	   <a href="{{ obj.get_absolute_url }}">{{vid.title}}</a>
+<!--	   {{ vid.embed_code | safe}}-->
+	{% endfor %}
+	</br>
+  </div>
+
+{% endblock %}
+
+
+
